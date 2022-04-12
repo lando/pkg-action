@@ -116,21 +116,21 @@ jobs:
         if: always()
         run: |
           if [ "${{ runner.os }}" == "Linux" ]; then
-            if [ "${{ steps.arch-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
+            if [ "${{ steps.runner-os-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
               echo "::notice title=TEST PASSED::Runner OS mapping to linux correctly"
             else
               echo "::error title=TEST FAILED!::Runner OS mapping not mapping to linux correctly"
               exit 1
             fi
           elif [ "${{ runner.os }}" == "macOS" ]; then
-            if [ "${{ steps.arch-input-tests.outputs.artifact-key }}" == "pkg-action-node14-macos-x64-${{ github.sha }}" ]; then
+            if [ "${{ steps.runner-os-tests.outputs.artifact-key }}" == "pkg-action-node14-macos-x64-${{ github.sha }}" ]; then
               echo "::notice title=TEST PASSED::Runner OS mapping to macos correctly"
             else
               echo "::error title=TEST FAILED!::Runner OS mapping not mapping to macos correctly"
               exit 2
             fi
           elif [ "${{ runner.os }}" == "Windows" ]; then
-            if [ "${{ steps.arch-input-tests.outputs.artifact-key }}" == "pkg-action-node14-win-x64-${{ github.sha }}" ]; then
+            if [ "${{ steps.runner-os-tests.outputs.artifact-key }}" == "pkg-action-node14-win-x64-${{ github.sha }}" ]; then
               echo "::notice title=TEST PASSED::Runner OS mapping to win correctly"
             else
               echo "::error title=TEST FAILED!::Runner OS mapping not mapping to win correctly"
@@ -163,21 +163,21 @@ jobs:
         if: always()
         run: |
           if [ "${{ matrix.os }}" == "linux" ]; then
-            if [ "${{ steps.arch-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
+            if [ "${{ steps.os-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
               echo "::notice title=TEST PASSED::OS input ${{ matrix.os }} being used correctly"
             else
               echo "::error title=TEST FAILED!::OS input not being using ${{ matrix.os }} correctly"
               exit 1
             fi
           elif [ "${{ matrix.os }}" == "macos" ]; then
-            if [ "${{ steps.arch-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
+            if [ "${{ steps.os-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
               echo "::notice title=TEST PASSED::OS input ${{ matrix.os }} being used correctly"
             else
               echo "::error title=TEST FAILED!::OS input not being using ${{ matrix.os }} correctly"
               exit 2
             fi
           elif [ "${{ matrix.os }}" == "win" ]; then
-            if [ "${{ steps.arch-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
+            if [ "${{ steps.os-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
               echo "::notice title=TEST PASSED::OS input ${{ matrix.os }} being used correctly"
             else
               echo "::error title=TEST FAILED!::OS input not being using ${{ matrix.os }} correctly"
