@@ -100,11 +100,15 @@ runs:
       shell: bash
       run: |
         yarn global add pkg@5.6.0
-        yarn global bin
-        echo "$(yarn global bin)" >> $GITHUB_PATH
-        env
+        if [ "${{ runner.os }}" == "Windows" ]; then
+          echo "/c/npm/prefix/bin" >> $GITHUB_PATH
+          env
+          /c/npm/prefix/bin/pkg --version
+          pkg --version
+        else
+          echo "$(yarn global bin)" >> $GITHUB_PATH
+        fi
         pkg --version
-
     - name: Set outputs
       shell: bash
       id: pkg-action
