@@ -1,0 +1,53 @@
+name: Test User Inputs
+
+on:
+  pull_request:
+
+jobs:
+  test-user-inputs:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - ubuntu-20.04
+        auto-deploy-repos:
+          - lando/auto-deploy-action
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v2
+      - name: Run Auto Deploy Action
+        uses: ./
+        id: default-input-tests
+        with:
+          # Required props
+          slug: ${{ matrix.auto-deploy-repos }}
+          # Test things
+          package: JOHN
+          version: "47"
+          deploy: false
+          pr: false
+          update: false
+
+      - name: "TEST: should use user specified package first"
+        if: always()
+        run: |
+          if [ "${{ steps.default-input-tests.outputs.package }}" == "JOHN" ]; then
+            echo "::notice title=TEST PASSED::Package name set from user correctly"
+          else
+            echo "::error title=TEST FAILED!::Package name not set correctly"
+            exit 1
+          fi
+        shell: bash
+
+      - name: "TEST: should use user specified version first."
+        if: always()
+        run: |
+          if [ "${{ steps.default-input-tests.outputs.version }}" == "47" ]; then
+            echo "::notice title=TEST PASSED::Version set from user correctly"
+          else
+            echo "::error title=TEST FAILED!::Version not set correctly"
+            exit 1
+          fi
+        shell: bash
+
+

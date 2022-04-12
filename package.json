@@ -1,0 +1,29 @@
+{
+  "name": "@lando/pkg-action",
+  "description": "A GitHub Action for 'compiling' node projects into binaries using vercel/pkg",
+  "version": "2.0.0",
+  "author": "Mike Pirog @pirog",
+  "contributors": [
+    {
+      "name": "Mike Pirog",
+      "email": "mike@lando.dev"
+    }
+  ],
+  "license": "GPL-3.0",
+  "repository": "https://github.com/lando/pkg-action",
+  "bugs": "https://github.com/lando/pkg-action/issues",
+  "homepage": "https://github.com/lando/pkg-action",
+  "keywords": [
+    "lando",
+    "Github Actions"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "version-bump-prompt": "^6.1.0"
+  },
+  "scripts": {
+    "release": "bump --tag --all --push package.json && git tag --force --annotate --message 'moving v2 tag' v2 && git push origin v2 --force"
+  }
+}

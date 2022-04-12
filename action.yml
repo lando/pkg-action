@@ -1,0 +1,109 @@
+name: "Pkg Action"
+description: "A GitHub Action for 'compiling' node projects into binaries using vercel/pkg."
+inputs:
+  # Required
+  entrypoint:
+    description: "The binary entrypoint path"
+    required: true
+
+  # Optional
+  arch:
+    description: "The architecture to build for x64|amd64|aarch64|arm64"
+    required: false
+    default: amd64
+  config:
+    description: "The config file to use"
+    required: false
+    default: package.json
+  node-version:
+    description: "The node version to package with"
+    required: false
+    default: node14
+  options:
+    description: "Additional options and flags to pass into pkg"
+    required: false
+  os:
+    description: "The operating system to build for win|linux|macos"
+    required: false
+    default: ${{ runner.os }}
+  upload:
+    description: "Upload the artifacts. Useful if you need to grab them for downstream for things like code signing."
+    required: false
+    default: true
+
+outputs:
+  file:
+    description: "The path to the generated binary."
+    value: ${{ steps.pkg-action.outputs.file }}
+  artifact-key:
+    description: "The artifact upload key."
+    value: ${{ steps.pkg-action.outputs.artifact-key }}
+
+runs:
+  using: composite
+  steps:
+    - name: Validate required input and environment
+      shell: bash
+      run: |
+        echo "::group::Ensure slug is set"
+        if [ "${{ inputs.slug }}" == "" ]; then
+          echo "::error title=Slug is not set!::You must specify a GitHub repo slug in order to run this shit."
+          exit 47
+        fi
+        echo "::endgroup::"
+
+        echo "::group::Ensure ${{ inputs.manager }} is installed"
+        if ! command -v ${{ inputs.manager }} &> /dev/null; then
+          echo "::error title=Package manager does not exist!::You must ensure the underlying package manager ${{ inputs.manager }} is installed."
+          exit 48
+        fi
+        echo "::endgroup::"
+
+    - name: Set outputs
+      shell: bash
+      id: auto-deploy-action
+      run: |
+        echo "::group::Setting outputs"
+        if [ "${{ inputs.package }}" != "" ]; then
+          echo "::set-output name=package::${{ inputs.package }}"
+        elif [ "${{ inputs.registry }}" == "yarn" ] || [ "${{ inputs.registry }}" == "npm" ]; then
+          echo "::set-output name=package::$(node -p "require('./package.json').name")"
+        elif [ "${{ inputs.registry }}" == "github" ]; then
+          echo "::set-output name=package::${{ github.repository }}"
+        fi
+
+        if [ "${{ inputs.separator }}" != "" ] && [ "${{ inputs.separator }}" != "@" ]; then
+          echo "::set-output name=separator::${{ inputs.separator }}"
+        elif [ "${{ inputs.registry }}" == "yarn" ] || [ "${{ inputs.registry }}" == "npm" ]; then
+          echo "::set-output name=separator::@"
+        elif [ "${{ inputs.registry }}" == "github" ]; then
+          echo "::set-output name=separator::#"
+        fi
+
+        if [ "${{ inputs.version }}" != "" ]; then
+          echo "::set-output name=version::${{ inputs.version }}"
+        elif [ "${{ inputs.registry }}" == "yarn" ] || [ "${{ inputs.registry }}" == "npm" ]; then
+          echo "::set-output name=version::$(node -p "require('./package.json').version")"
+        elif [ "${{ inputs.registry }}" == "github" ]; then
+          echo "::set-output name=version::${{ github.ref_name }}"
+        fi
+        echo "::endgroup::"
+
+        # TODO: support other registries: composer, etc
+
+    - name: Validate outputs
+      shell: bash
+      run: |
+        echo "::group::Validating package output"
+        if [ "${{ steps.auto-deploy-action.outputs.package }}" == "" ]; then
+          echo "::error title=Package name is empty!::Package either not set or could not autodetect."
+          exit 10
+        fi
+        echo "::endgroup::"
+
+        echo "::group::Validating version output"
+        if [ "${{ steps.auto-deploy-action.outputs.version }}" == "" ]; then
+          echo "::error title=Version is empty!::Version either not set or could not autodetect."
+          exit 11
+        fi
+        echo "::endgroup::"
