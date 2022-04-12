@@ -63,16 +63,16 @@ jobs:
         run: |
           if [ "${{ matrix.arch }}" == "x64" ]; then
             if [ "${{ steps.arch-input-tests.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
-              echo "::notice title=TEST PASSED::Arch mapping from ${{ matrix.arch } to x64 correctly"
+              echo "::notice title=TEST PASSED::Arch mapping from ${{ matrix.arch }} to x64 correctly"
             else
-              echo "::error title=TEST FAILED!::Arch not mapping from ${{ matrix.arch } to x64 correctly"
+              echo "::error title=TEST FAILED!::Arch not mapping from ${{ matrix.arch }} to x64 correctly"
               exit 1
             fi
           elif [ "${{ matrix.arch }}" == "amd64" ]; then
             if [ "${{ steps.arch-input-tests.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
-              echo "::notice title=TEST PASSED::Arch mapping from ${{ matrix.arch } to x64 correctly"
+              echo "::notice title=TEST PASSED::Arch mapping from ${{ matrix.arch }} to x64 correctly"
             else
-              echo "::error title=TEST FAILED!::Arch not mapping from ${{ matrix.arch } to x64 correctly"
+              echo "::error title=TEST FAILED!::Arch not mapping from ${{ matrix.arch }} to x64 correctly"
               exit 1
             fi
           elif [ "${{ matrix.arch }}" == "arm64" ]; then
