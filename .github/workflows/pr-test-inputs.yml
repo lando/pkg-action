@@ -100,7 +100,7 @@ jobs:
         os:
           - macos-11
           - ubuntu-20.04
-          - windows-2022
+          - windows-2019
 
     steps:
       - name: Checkout action code
@@ -170,14 +170,14 @@ jobs:
               exit 1
             fi
           elif [ "${{ matrix.os }}" == "macos" ]; then
-            if [ "${{ steps.os-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
+            if [ "${{ steps.os-input-tests.outputs.artifact-key }}" == "pkg-action-node14-macos-x64-${{ github.sha }}" ]; then
               echo "::notice title=TEST PASSED::OS input ${{ matrix.os }} being used correctly"
             else
               echo "::error title=TEST FAILED!::OS input not being using ${{ matrix.os }} correctly"
               exit 2
             fi
           elif [ "${{ matrix.os }}" == "win" ]; then
-            if [ "${{ steps.os-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
+            if [ "${{ steps.os-input-tests.outputs.artifact-key }}" == "pkg-action-node14-win-x64-${{ github.sha }}" ]; then
               echo "::notice title=TEST PASSED::OS input ${{ matrix.os }} being used correctly"
             else
               echo "::error title=TEST FAILED!::OS input not being using ${{ matrix.os }} correctly"
