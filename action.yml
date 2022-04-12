@@ -100,7 +100,9 @@ runs:
       shell: bash
       run: |
         yarn global add pkg@5.6.0
+        yarn global bin
         echo "$(yarn global bin)" >> $GITHUB_PATH
+        env
         pkg --version
 
     - name: Set outputs
