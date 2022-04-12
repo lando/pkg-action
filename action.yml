@@ -87,6 +87,7 @@ runs:
       with:
         node-version: 14
     - name: Get Yarn cache directory
+      shell: bash
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
     - name: Use Yarn cache
@@ -96,18 +97,23 @@ runs:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
     - name: Install pkg
+      shell: bash
       run: |
         yarn global add pkg@5.6.0
         yarn pkg --version
-
 
     - name: Set outputs
       shell: bash
       id: pkg-action
       run: |
         echo "::group::Setting outputs"
-        echo "::set-output name=file::dist/$(node -p "require('./package.json').name")"
-        echo "::set-output name=artifact-key::$(node -p "require('./package.json').name")-${{ outputs.pkg-action-internal.target-node }}-${{ outputs.pkg-action-internal.target-os }}-${{ outputs.pkg-action-internal.target-arch }}-${{ github.sha }}"
+        if [ "${{ steps.outputs.pkg-action-internal.target-os }}" == "win" ]; then
+          echo "::set-output name=file::dist/$(node -p "require('./package.json').name").exe"
+        else
+          echo "::set-output name=file::dist/$(node -p "require('./package.json').name")"
+        fi
+
+        echo "::set-output name=artifact-key::${{ github.event.repository.name }}-${{ steps.outputs.pkg-action-internal.target-node }}-${{ steps.outputs.pkg-action-internal.target-os }}-${{ steps.outputs.pkg-action-internal.target-arch }}-${{ github.sha }}"
         echo "::endgroup::"
 
 

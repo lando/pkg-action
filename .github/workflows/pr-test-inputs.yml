@@ -1,0 +1,41 @@
+name: Test Inputs
+
+on:
+  pull_request:
+
+jobs:
+  test-default-inputs:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v2
+      - name: Run Pkg Action
+        uses: ./
+        id: default-input-tests
+        with:
+          entrypoint: bin/test.js
+          test: true
+
+      - name: "TEST: should set the correct file output"
+        if: always()
+        run: |
+          if [ "${{ steps.default-input-tests.outputs.file }}" == "dist/@lando/test" ]; then
+            echo "::notice title=TEST PASSED::Ouput binary filename set from defaults correctly"
+          else
+            echo "::error title=TEST FAILED!::Ouput binary filename not set correctly"
+            exit 1
+          fi
+        shell: bash
+
+      - name: "TEST: should set the correct artifact-key"
+        if: always()
+        run: |
+          if [ "${{ steps.default-input-tests.outputs.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
+            echo "::notice title=TEST PASSED::Output artifact set from user correctly"
+          else
+            echo "::error title=TEST FAILED!::Version not set correctly"
+            exit 1
+          fi
+        shell: bash
+
+
