@@ -26,6 +26,10 @@ inputs:
     description: "The operating system to build for win|linux|macos"
     required: false
     default: ${{ runner.os }}
+  test:
+    description: "Hidden flag for input testing"
+    default: false
+    required: false
   upload:
     description: "Upload the artifacts. Useful if you need to grab them for downstream for things like code signing."
     required: false
@@ -42,68 +46,84 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Validate required input and environment
+    - name: Validate required inputs
       shell: bash
       run: |
-        echo "::group::Ensure slug is set"
-        if [ "${{ inputs.slug }}" == "" ]; then
-          echo "::error title=Slug is not set!::You must specify a GitHub repo slug in order to run this shit."
+        echo "::group::Ensure entrypoint is set"
+        if [ "${{ inputs.entrypoint }}" == "" ]; then
+          echo "::error title=Entrypoint is not set!::You must specify an entrypoint file in order to run this shit."
           exit 47
         fi
         echo "::endgroup::"
 
-        echo "::group::Ensure ${{ inputs.manager }} is installed"
-        if ! command -v ${{ inputs.manager }} &> /dev/null; then
-          echo "::error title=Package manager does not exist!::You must ensure the underlying package manager ${{ inputs.manager }} is installed."
-          exit 48
+    - name: Set internal outputs
+      shell: bash
+      id: pkg-action-internal
+      run: |
+        echo "::group::Setting internal outputs"
+        if [ "${{ inputs.os }}" == "Linux" ]; then
+          echo "::set-output name=target-os::linux"
+        elif [ "${{ inputs.os }}" == "macOS" ]; then
+          echo "::set-output name=target-os::macos"
+        elif [ "${{ inputs.os }}" == "Windows" ]; then
+          echo "::set-output name=target-os::win"
+        else
+          echo "::set-output name=target-os::${{ inputs.os }}"
         fi
+
+        if [ "${{ inputs.os }}" == "amd64" ]; then
+          echo "::set-output name=target-arch::x64"
+        elif [ "${{ inputs.os }}" == "aarch64" ]; then
+          echo "::set-output name=target-arch::arm64"
+        else
+          echo "::set-output name=target-arch::${{ inputs.arch }}"
+        fi
+
+        echo "::set-output name=target-node::${{ inputs.node-version }}"
         echo "::endgroup::"
+
+    - name: Install node 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - name: Get Yarn cache directory
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - name: Use Yarn cache
+      id: yarn-cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - name: Install pkg
+      run: |
+        yarn global add pkg@5.6.0
+        yarn pkg --version
+
 
     - name: Set outputs
       shell: bash
-      id: auto-deploy-action
+      id: pkg-action
       run: |
         echo "::group::Setting outputs"
-        if [ "${{ inputs.package }}" != "" ]; then
-          echo "::set-output name=package::${{ inputs.package }}"
-        elif [ "${{ inputs.registry }}" == "yarn" ] || [ "${{ inputs.registry }}" == "npm" ]; then
-          echo "::set-output name=package::$(node -p "require('./package.json').name")"
-        elif [ "${{ inputs.registry }}" == "github" ]; then
-          echo "::set-output name=package::${{ github.repository }}"
-        fi
-
-        if [ "${{ inputs.separator }}" != "" ] && [ "${{ inputs.separator }}" != "@" ]; then
-          echo "::set-output name=separator::${{ inputs.separator }}"
-        elif [ "${{ inputs.registry }}" == "yarn" ] || [ "${{ inputs.registry }}" == "npm" ]; then
-          echo "::set-output name=separator::@"
-        elif [ "${{ inputs.registry }}" == "github" ]; then
-          echo "::set-output name=separator::#"
-        fi
-
-        if [ "${{ inputs.version }}" != "" ]; then
-          echo "::set-output name=version::${{ inputs.version }}"
-        elif [ "${{ inputs.registry }}" == "yarn" ] || [ "${{ inputs.registry }}" == "npm" ]; then
-          echo "::set-output name=version::$(node -p "require('./package.json').version")"
-        elif [ "${{ inputs.registry }}" == "github" ]; then
-          echo "::set-output name=version::${{ github.ref_name }}"
-        fi
+        echo "::set-output name=file::dist/$(node -p "require('./package.json').name")"
+        echo "::set-output name=artifact-key::$(node -p "require('./package.json').name")-${{ outputs.pkg-action-internal.target-node }}-${{ outputs.pkg-action-internal.target-os }}-${{ outputs.pkg-action-internal.target-arch }}-${{ github.sha }}"
         echo "::endgroup::"
 
-        # TODO: support other registries: composer, etc
 
-    - name: Validate outputs
-      shell: bash
-      run: |
-        echo "::group::Validating package output"
-        if [ "${{ steps.auto-deploy-action.outputs.package }}" == "" ]; then
-          echo "::error title=Package name is empty!::Package either not set or could not autodetect."
-          exit 10
-        fi
-        echo "::endgroup::"
+    # - name: Validate outputs
+    #   shell: bash
+    #   run: |
+    #     echo "::group::Validating package output"
+    #     if [ "${{ steps.auto-deploy-action.outputs.package }}" == "" ]; then
+    #       echo "::error title=Package name is empty!::Package either not set or could not autodetect."
+    #       exit 10
+    #     fi
+    #     echo "::endgroup::"
 
-        echo "::group::Validating version output"
-        if [ "${{ steps.auto-deploy-action.outputs.version }}" == "" ]; then
-          echo "::error title=Version is empty!::Version either not set or could not autodetect."
-          exit 11
-        fi
-        echo "::endgroup::"
+    #     echo "::group::Validating version output"
+    #     if [ "${{ steps.auto-deploy-action.outputs.version }}" == "" ]; then
+    #       echo "::error title=Version is empty!::Version either not set or could not autodetect."
+    #       exit 11
+    #     fi
+    #     echo "::endgroup::"

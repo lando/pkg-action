@@ -4,29 +4,17 @@ on:
   pull_request:
 
 jobs:
-  test-user-inputs:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os:
-          - ubuntu-20.04
-        auto-deploy-repos:
-          - lando/auto-deploy-action
+  test-default-inputs:
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout action code
         uses: actions/checkout@v2
-      - name: Run Auto Deploy Action
+      - name: Run Pkg Action
         uses: ./
-        id: default-input-tests
+        id: input-tests
         with:
-          # Required props
-          slug: ${{ matrix.auto-deploy-repos }}
-          # Test things
-          package: JOHN
-          version: "47"
-          deploy: false
-          pr: false
-          update: false
+          entrypoint: bin/test.js
+          test: true
 
       - name: "TEST: should use user specified package first"
         if: always()
