@@ -19,7 +19,7 @@ jobs:
       - name: "TEST: should set the correct file output"
         if: always()
         run: |
-          if [ "${{ steps.default-input-tests.outputs.file }}" == "dist/@lando/test" ]; then
+          if [ "${{ steps.default-input-tests.outputs.file }}" == "dist/@lando/pkg-action" ]; then
             echo "::notice title=TEST PASSED::Ouput binary filename set from defaults correctly"
           else
             echo "::error title=TEST FAILED!::Ouput binary filename not set correctly"

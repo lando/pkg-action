@@ -114,7 +114,7 @@ runs:
           echo "::set-output name=file::dist/$(node -p "require('./package.json').name")"
         fi
 
-        echo "::set-output name=artifact-key::${{ github.event.repository.name }}-${{ steps.outputs.pkg-action-internal.target-node }}-${{ steps.outputs.pkg-action-internal.target-os }}-${{ steps.outputs.pkg-action-internal.target-arch }}-${{ github.sha }}"
+        echo "::set-output name=artifact-key::${{ github.event.repository.name }}-${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }}-${{ github.sha }}"
         echo "::endgroup::"
 
 
