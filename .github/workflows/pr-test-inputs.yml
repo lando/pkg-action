@@ -38,4 +38,56 @@ jobs:
           fi
         shell: bash
 
+  test-arch-inputs:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        arch:
+          - amd64
+          - x64
+          - aarch64
+          - arm64
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v2
+      - name: Run Pkg Action
+        uses: ./
+        id: arch-input-tests
+        with:
+          entrypoint: bin/test.js
+          test: true
+          arch: ${{ matrix.arch }}
 
+      - name: "TEST: should map ${{ matrix.arch }} to x64 or arm64 as needed"
+        if: always()
+        run: |
+          if [ "${{ matrix.arch }}" == "x64" ]; then
+            if [ "${{ steps.arch-input-tests.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
+              echo "::notice title=TEST PASSED::Arch mapping from ${{ matrix.arch } to x64 correctly"
+            else
+              echo "::error title=TEST FAILED!::Arch not mapping from ${{ matrix.arch } to x64 correctly"
+              exit 1
+            fi
+          elif [ "${{ matrix.arch }}" == "amd64" ]; then
+            if [ "${{ steps.arch-input-tests.artifact-key }}" == "pkg-action-node14-linux-x64-${{ github.sha }}" ]; then
+              echo "::notice title=TEST PASSED::Arch mapping from ${{ matrix.arch } to x64 correctly"
+            else
+              echo "::error title=TEST FAILED!::Arch not mapping from ${{ matrix.arch } to x64 correctly"
+              exit 1
+            fi
+          elif [ "${{ matrix.arch }}" == "arm64" ]; then
+            if [ "${{ steps.arch-input-tests.artifact-key }}" == "pkg-action-node14-linux-arm64-${{ github.sha }}" ]; then
+              echo "::notice title=TEST PASSED::Arch mapping from ${{ matrix.arch } to arm64 correctly"
+            else
+              echo "::error title=TEST FAILED!::Arch not mapping from ${{ matrix.arch } to arm64 correctly"
+              exit 1
+            fi
+          elif [ "${{ matrix.arch }}" == "aarch64" ]; then
+            if [ "${{ steps.arch-input-tests.artifact-key }}" == "pkg-action-node14-linux-arm64-${{ github.sha }}" ]; then
+              echo "::notice title=TEST PASSED::Arch mapping from ${{ matrix.arch } to arm64 correctly"
+            else
+              echo "::error title=TEST FAILED!::Arch not mapping from ${{ matrix.arch } to arm64 correctly"
+              exit 1
+            fi
+          fi
+        shell: bash

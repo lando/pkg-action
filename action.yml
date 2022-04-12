@@ -71,9 +71,9 @@ runs:
           echo "::set-output name=target-os::${{ inputs.os }}"
         fi
 
-        if [ "${{ inputs.os }}" == "amd64" ]; then
+        if [ "${{ inputs.arch }}" == "amd64" ]; then
           echo "::set-output name=target-arch::x64"
-        elif [ "${{ inputs.os }}" == "aarch64" ]; then
+        elif [ "${{ inputs.arch }}" == "aarch64" ]; then
           echo "::set-output name=target-arch::arm64"
         else
           echo "::set-output name=target-arch::${{ inputs.arch }}"
