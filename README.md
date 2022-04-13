@@ -36,7 +36,7 @@ These keys are set to sane defaults but can be modified as needed.
 | `config` | The config file to use. | `package.json` | `config.json` |
 | `node-version` | The node version to package with. | `node14` | `node8` \| `node10` \| `node12` \| `node14` \| `node16` \| `latest` |
 | `options` | Additional options and flags to pass into pkg. | `null` | Additional [pkg options](https://github.com/vercel/pkg#usage) |
-| `os` | The operating system to build for. | `${{ runner.os }}` | `win` |
+| `os` | The operating system to build for. | `${{ runner.os }}` | `linux` \| `macos` \| `win` |
 | `upload` | Upload the artifacts. Useful if you need to grab them for downstream for things like code signing. | `true` | `false` \| `true` |
 
 ## Outputs
@@ -55,7 +55,52 @@ outputs:
 
 ### Basic Usage
 
+```yaml
+name: Package into node binary
+uses: lando/pkg-action@v2
+with:
+  entrypoint: bin/cli
+```
+
 ### Advanced Usage
+
+**ALL OPTIONS**
+```yaml
+name: Package into node binary
+uses: lando/pkg-action@v2
+with:
+  entrypoint: bin/cli
+  arch: arm64
+  config: package.json
+  node-version: node16
+  options: -C
+  os: win
+  upload: false
+```
+
+**CROSS COMPILE ON ALL THE THINGS**
+```yaml
+runs-on: ubuntu-20.04
+strategy:
+  matrix:
+    arch:
+      - x64
+      - arm64
+    node-version:
+      - node16
+    os:
+      - linux
+      - macos
+      - win
+steps:
+  - name: Package into node binary
+    uses: lando/pkg-actionn@v2
+    with:
+      entrypoint: bin/cli
+      arch: ${{ matrix.arch }}
+      node-version: ${{ matrix.node-version }}
+      os: ${{ matrix.os }}
+```
 
 ## Changelog
 
@@ -63,9 +108,13 @@ We try to log all changes big and small in both [THE CHANGELOG](https://github.c
 
 ## Releasing
 
-```bash
-yarn release
-```
+1. Correctly bump versions, tag things and push to github
+
+  ```bash
+  yarn release
+  ```
+
+2. Publish to [GitHub Actions Marketplace](https://docs.github.com/en/enterprise-cloud@latest/actions/creating-actions/publishing-actions-in-github-marketplace)
 
 ## Contributors
 
