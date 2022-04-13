@@ -112,8 +112,8 @@ runs:
         echo "::set-output name=artifact-key::${{ github.event.repository.name }}-${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }}-${{ github.sha }}"
         echo "::endgroup::"
 
-    - name: Run pkg command
-      if: inputs.test != 'true'
+    - name: Run x64 pkg command
+      if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-node == 'x64'
       shell: bash
       run: |
         pkg \
@@ -129,7 +129,7 @@ runs:
       shell: bash
       run: stat ${{ steps.pkg-action.outputs.file }}
 
-    - name: Upload hyperdrive-build-${{ github.sha }}
+    - name: Upload ${{ steps.pkg-action.outputs.artifact-key }}
       if: inputs.test != 'true' && inputs.upload == 'true'
       uses: actions/upload-artifact@v3
       with:

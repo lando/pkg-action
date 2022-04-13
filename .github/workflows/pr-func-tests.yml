@@ -14,3 +14,45 @@ jobs:
         id: basic-func-test
         with:
           entrypoint: bin/test
+
+  basic-cross-platform-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - macos-11
+          - ubuntu-20.04
+          - windows-2022
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v2
+      - name: Run Pkg Action
+        uses: ./
+        id: basic-func-test
+        with:
+          entrypoint: bin/test
+          upload: false
+
+  basic-cross-everything-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version:
+          - node8
+          - node12
+          - node16
+        os:
+          - linux
+          - macos
+          - win
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v2
+      - name: Run Pkg Action
+        uses: ./
+        id: basic-func-test
+        with:
+          entrypoint: bin/test
+          node-version: ${{ matrix.node-version }}
+          os: ${{ matrix.os }}
+          upload: false
