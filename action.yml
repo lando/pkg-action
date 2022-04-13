@@ -83,31 +83,21 @@ runs:
         echo "::endgroup::"
 
     - name: Install node 14
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: 14
-    - name: Get Yarn cache directory
-      shell: bash
-      id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
-    - name: Use Yarn cache
-      id: yarn-cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        cache: npm
+
     - name: Install pkg
       shell: bash
       run: |
-        if [ "${{ runner.os }}" == "Windows" ]; then
-          # NOTE: for some reason a global yarn add does not work even if its in PATH
-          npm install -g pkg@5.6.0
-          ls -lsa /c/npm/prefix
+        npm install -g pkg@5.6.0
+        if pkg --version >/dev/null; then
+          "::notice title=pkg installed::Using package version $(pkg --version)"
         else
-          yarn global add pkg@5.6.0
-          echo "$(yarn global bin)" >> $GITHUB_PATH
+          echo "::error title=Cannot run pkg::Cannot seem to find the pkg binary"
         fi
-        pkg --version
+
     - name: Set outputs
       shell: bash
       id: pkg-action

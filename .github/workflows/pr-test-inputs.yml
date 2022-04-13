@@ -185,3 +185,30 @@ jobs:
             fi
           fi
         shell: bash
+
+      - name: "TEST: should use correct file suffix"
+        if: always()
+        run: |
+          if [ "${{ matrix.os }}" == "linux" ]; then
+            if [ "${{ steps.os-input-tests.outputs.file }}" == "dist/@lando/pkg-action" ]; then
+              echo "::notice title=TEST PASSED::Correct ${{ matrix.os }} file suffix being used correctly"
+            else
+              echo "::error title=TEST FAILED!::File suffix for ${{ matrix.os }} not being set correctly"
+              exit 1
+            fi
+          elif [ "${{ matrix.os }}" == "macos" ]; then
+            if [ "${{ steps.os-input-tests.outputs.file }}" == "dist/@lando/pkg-action" ]; then
+              echo "::notice title=TEST PASSED::Correct ${{ matrix.os }} file suffix being used correctly"
+            else
+              echo "::error title=TEST FAILED!::File suffix for ${{ matrix.os }} not being set correctly"
+              exit 2
+            fi
+          elif [ "${{ matrix.os }}" == "win" ]; then
+            if [ "${{ steps.os-input-tests.outputs.file }}" == "dist/@lando/pkg-action.exe" ]; then
+              echo "::notice title=TEST PASSED::Correct ${{ matrix.os }} file suffix being used correctly"
+            else
+              echo "::error title=TEST FAILED!::File suffix for ${{ matrix.os }} not being set correctly"
+              exit 3
+            fi
+          fi
+        shell: bash
