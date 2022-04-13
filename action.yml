@@ -101,7 +101,7 @@ runs:
       run: |
         if [ "${{ runner.os }}" == "Windows" ]; then
           # NOTE: for some reason a global yarn add does not work even if its in PATH
-          npm install -g pgk@5.6.0
+          npm install -g pkg@5.6.0
           ls -lsa /c/npm/prefix
         else
           yarn global add pkg@5.6.0
