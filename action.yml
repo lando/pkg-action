@@ -123,3 +123,17 @@ runs:
         --debug \
         ${{ inputs.options }} \
         ${{ inputs.entrypoint }}
+
+    - name: Validate file existence
+      if: inputs.test != 'true'
+      shell: bash
+      run: stat ${{ steps.pkg-action.outputs.file }}
+
+    - name: Upload hyperdrive-build-${{ github.sha }}
+      if: inputs.test != 'true' && inputs.upload == 'true'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.pkg-action.outputs.artifact-key }}
+        path: ${{ steps.pkg-action.outputs.file }}
+        if-no-files-found: error
+        retention-days: 1
