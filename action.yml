@@ -100,8 +100,8 @@ runs:
       shell: bash
       run: |
         if [ "${{ runner.os }}" == "Windows" ]; then
-          yarn global add pkg@5.6.0 --prefix /usr
-          ls -lsa /usr/bin
+          yarn global add pkg@5.6.0 --prefix /c/npm/prefix
+          ls -lsa /c/npm/prefix
         else
           yarn global add pkg@5.6.0
           echo "$(yarn global bin)" >> $GITHUB_PATH
