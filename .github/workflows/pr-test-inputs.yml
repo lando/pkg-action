@@ -14,7 +14,6 @@ jobs:
         id: default-input-tests
         with:
           entrypoint: bin/test.js
-          test: true
 
       - name: "TEST: should set the correct file output"
         if: always()
