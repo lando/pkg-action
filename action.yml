@@ -1,5 +1,8 @@
 name: "Pkg Action"
 description: "A GitHub Action for 'compiling' node projects into binaries using vercel/pkg."
+branding:
+  color: purple
+  icon: package
 inputs:
   # Required
   entrypoint:

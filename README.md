@@ -6,10 +6,7 @@ This is a GitHub action that allows you to "compile" node projects with [pkg](ht
 * `x64|amd64` and `aarch64|arm64`
 * `macos|linux|windows`.
 
-If you are also looking to code sign/notarize the resulting binaries then check out
-
-* CODE SIGN ACTION
-* NOTARIZE ACTION
+If you are also looking to code sign/notarize the resulting binaries then check out [@lando/code-sign-action](https://github.com/marketplace/actions/code-sign-action).
 
 ### Caveats
 
