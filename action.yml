@@ -113,7 +113,7 @@ runs:
         echo "::endgroup::"
 
     - name: Run x64 pkg command
-      if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-node == 'x64'
+      if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-arch == 'x64'
       shell: bash
       run: |
         pkg \
@@ -123,11 +123,7 @@ runs:
         --debug \
         ${{ inputs.options }} \
         ${{ inputs.entrypoint }}
-
-    - name: Validate file existence
-      if: inputs.test != 'true'
-      shell: bash
-      run: stat ${{ steps.pkg-action.outputs.file }}
+        stat ${{ steps.pkg-action.outputs.file }}
 
     - name: Upload ${{ steps.pkg-action.outputs.artifact-key }}
       if: inputs.test != 'true' && inputs.upload == 'true'
