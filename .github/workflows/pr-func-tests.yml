@@ -37,6 +37,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        arch:
+          - x64
+          - arm64
         node-version:
           - node8
           - node12
@@ -52,6 +55,7 @@ jobs:
         uses: ./
         id: basic-func-test
         with:
+          arch: ${{ matrix.arch }}
           entrypoint: bin/test
           node-version: ${{ matrix.node-version }}
           os: ${{ matrix.os }}
