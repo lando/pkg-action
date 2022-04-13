@@ -96,7 +96,7 @@ runs:
       run: |
         npm install -g pkg@5.6.0
         if pkg --version >/dev/null; then
-          echo "::notice title=pkg installed::Using package version $(pkg --version)"
+          echo "::notice title=pkg installed::Using version $(pkg --version)"
         else
           echo "::error title=Cannot run pkg::Cannot seem to find the pkg binary"
         fi
