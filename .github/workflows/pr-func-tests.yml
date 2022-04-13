@@ -41,8 +41,6 @@ jobs:
           - x64
           - arm64
         node-version:
-          - node8
-          - node12
           - node16
         os:
           - linux
