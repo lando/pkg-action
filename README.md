@@ -94,7 +94,7 @@ strategy:
       - win
 steps:
   - name: Package into node binary
-    uses: lando/pkg-actionn@v2
+    uses: lando/pkg-action@v2
     with:
       entrypoint: bin/cli
       arch: ${{ matrix.arch }}
