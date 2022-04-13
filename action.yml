@@ -127,7 +127,7 @@ runs:
 
     - name: Run arm64 pkg command
       if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-arch == 'arm64'
-      uses: uraimo/run-on-arch-action@v2.0.5
+      uses: uraimo/run-on-arch-action@v2
       with:
         arch: aarch64
         # @TODO: eventually we need to get this to work on ubuntu20.04 for build parity but we are using
