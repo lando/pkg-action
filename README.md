@@ -11,6 +11,13 @@ If you are also looking to code sign/notarize the resulting binaries then check 
 * CODE SIGN ACTION
 * NOTARIZE ACTION
 
+### Caveats
+
+* If you are looking to "cross compile" binaries across OS **AND** architecture then we recommend you matrix strategy across this actions `os` and `arch` inputs instead of `runs-on`. This is neccessary because `arm64` compilation is currently emulated on Linux only. If you are compiling just on `amd64|x64` then it's _probably_ ok to use `runs-on`.
+* If you are looking to "cross compile" binaries across OS **AND** architecture **AND** code sign/notarize the resulting binaries we recommend you first upload the artifacts and then download them to the `os` you need to do the code signing.
+
+See [Advanced Usage](#advanced-usage) below for some examples of ^.
+
 ## Required Inputs
 
 These keys must be set correctly for the action to work.
@@ -49,7 +56,6 @@ outputs:
 ### Basic Usage
 
 ### Advanced Usage
-
 
 ## Changelog
 
