@@ -113,7 +113,7 @@ runs:
         echo "::endgroup::"
 
     - name: Run pkg command
-      if: inputs.test != 'false'
+      if: inputs.test != 'true'
       shell: bash
       run: |
         pkg \

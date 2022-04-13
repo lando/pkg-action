@@ -13,4 +13,4 @@ jobs:
         uses: ./
         id: basic-func-test
         with:
-          entrypoint: bin/test.js
+          entrypoint: bin/test

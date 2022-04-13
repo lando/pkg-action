@@ -13,7 +13,7 @@ jobs:
         uses: ./
         id: default-input-tests
         with:
-          entrypoint: bin/test.js
+          entrypoint: bin/test
 
       - name: "TEST: should set the correct file output"
         if: always()
@@ -53,7 +53,7 @@ jobs:
         uses: ./
         id: arch-input-tests
         with:
-          entrypoint: bin/test.js
+          entrypoint: bin/test
           test: true
           arch: ${{ matrix.arch }}
 
@@ -108,7 +108,7 @@ jobs:
         uses: ./
         id: runner-os-tests
         with:
-          entrypoint: bin/test.js
+          entrypoint: bin/test
           test: true
 
       - name: "TEST: should map runner os correctly"
@@ -154,7 +154,7 @@ jobs:
         uses: ./
         id: os-input-tests
         with:
-          entrypoint: bin/test.js
+          entrypoint: bin/test
           test: true
           os: ${{ matrix.os }}
 
