@@ -1,0 +1,16 @@
+name: Func Tests
+
+on:
+  pull_request:
+
+jobs:
+  basic-func-test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v2
+      - name: Run Pkg Action
+        uses: ./
+        id: basic-func-test
+        with:
+          entrypoint: bin/test.js

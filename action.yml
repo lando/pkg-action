@@ -112,20 +112,14 @@ runs:
         echo "::set-output name=artifact-key::${{ github.event.repository.name }}-${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }}-${{ github.sha }}"
         echo "::endgroup::"
 
-
-    # - name: Validate outputs
-    #   shell: bash
-    #   run: |
-    #     echo "::group::Validating package output"
-    #     if [ "${{ steps.auto-deploy-action.outputs.package }}" == "" ]; then
-    #       echo "::error title=Package name is empty!::Package either not set or could not autodetect."
-    #       exit 10
-    #     fi
-    #     echo "::endgroup::"
-
-    #     echo "::group::Validating version output"
-    #     if [ "${{ steps.auto-deploy-action.outputs.version }}" == "" ]; then
-    #       echo "::error title=Version is empty!::Version either not set or could not autodetect."
-    #       exit 11
-    #     fi
-    #     echo "::endgroup::"
+    - name: Run pkg command
+      if: test.pr != 'false'
+      shell: bash
+      run: |
+        pkg \
+        --config ${{ inputs.config }} \
+        --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+        --out-path dist \
+        --debug \
+        ${{ inputs.options }} \
+        ${{ inputs.entrypoint }}
