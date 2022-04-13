@@ -101,10 +101,14 @@ runs:
       run: |
         yarn global add pkg@5.6.0
         if [ "${{ runner.os }}" == "Windows" ]; then
+          ls -lsa /c/npm
           ls -lsa /c/npm/prefix
           ls -lsa /c/npm/prefix/bin
-          ln -sf /c/npm/prefix/bin/pkg.cmd /usr/bin/pkg
           ln -sf /c/npm/prefix/bin/pkg.cmd /usr/bin/pkg.cmd
+          ln -sf /c/npm/prefix/bin/pkg /usr/bin/pkg
+          echo "/c/npm/prefix/bin" >> $GITHUB_PATH
+          env
+
           /c/npm/prefix/bin/pkg --version
           /c/npm/prefix/bin/pkg.cmd --version
           pkg --version
