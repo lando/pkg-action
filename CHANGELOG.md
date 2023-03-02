@@ -1,6 +1,3 @@
-
-
-
 ## v2.2.0 - [March 1, 2023](https://github.com/lando/pkg-action/releases/tag/v2.2.0)
 
 * Added input `pkg` to specify version of [@vercel/pkg](https://github.com/vercel/pkg)
