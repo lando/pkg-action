@@ -85,16 +85,16 @@ runs:
         echo "::set-output name=target-node::${{ inputs.node-version }}"
         echo "::endgroup::"
 
-    - name: Install node 14
+    - name: Install node 16
       uses: actions/setup-node@v3
       with:
-        node-version: 14
+        node-version: 16
         cache: npm
 
     - name: Install pkg
       shell: bash
       run: |
-        npm install -g pkg@5.6.0
+        npm install -g pkg@5.8.0
         if pkg --version >/dev/null; then
           echo "::notice title=pkg installed::Using version $(pkg --version)"
         else
