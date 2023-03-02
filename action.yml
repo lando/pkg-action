@@ -29,6 +29,10 @@ inputs:
     description: "The operating system to build for win|linux|macos"
     required: false
     default: ${{ runner.os }}
+  pkg:
+    description: "The version on @vercel/pkg to use"
+    required: false
+    default: "5.8.0"
   test:
     description: "Hidden flag for input testing"
     default: false
@@ -91,10 +95,10 @@ runs:
         node-version: 16
         cache: npm
 
-    - name: Install pkg
+    - name: Install pkg ${{ inputs.pkg }}
       shell: bash
       run: |
-        npm install -g pkg@5.8.0
+        npm install -g pkg@${{ inputs.pkg }}
         if pkg --version >/dev/null; then
           echo "::notice title=pkg installed::Using version $(pkg --version)"
         else
@@ -145,7 +149,7 @@ runs:
           curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
           echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
           apt update && apt -y install yarn
-          yarn global add pkg@5.6.0 --prefix /usr/local
+          yarn global add pkg@${{ inputs.pkg }} --prefix /usr/local
           pkg --version
         run: |
           pkg \

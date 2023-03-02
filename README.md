@@ -34,6 +34,7 @@ These keys are set to sane defaults but can be modified as needed.
 | `node-version` | The node version to package with. | `node14` | `node8` \| `node10` \| `node12` \| `node14` \| `node16` \| `latest` |
 | `options` | Additional options and flags to pass into pkg. | `null` | Additional [pkg options](https://github.com/vercel/pkg#usage) |
 | `os` | The operating system to build for. | `${{ runner.os }}` | `linux` \| `macos` \| `win` |
+| `pkg` | The version on @vercel/pkg to use. | `5.8.0` | `latest` |
 | `upload` | Upload the artifacts. Useful if you need to grab them for downstream for things like code signing. | `true` | `false` \| `true` |
 
 ## Outputs
