@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout action code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Pkg Action
         uses: ./
         id: default-input-tests
@@ -48,7 +48,7 @@ jobs:
           - arm64
     steps:
       - name: Checkout action code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Pkg Action
         uses: ./
         id: arch-input-tests
@@ -103,7 +103,7 @@ jobs:
 
     steps:
       - name: Checkout action code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Pkg Action
         uses: ./
         id: runner-os-tests
@@ -149,7 +149,7 @@ jobs:
 
     steps:
       - name: Checkout action code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Pkg Action
         uses: ./
         id: os-input-tests
