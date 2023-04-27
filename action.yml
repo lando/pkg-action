@@ -69,24 +69,24 @@ runs:
       run: |
         echo "::group::Setting internal outputs"
         if [ "${{ inputs.os }}" == "Linux" ]; then
-          echo "::set-output name=target-os::linux"
+          echo "target-os=linux" >> $GITHUB_OUTPUT
         elif [ "${{ inputs.os }}" == "macOS" ]; then
-          echo "::set-output name=target-os::macos"
+          echo "target-os=macos" >> $GITHUB_OUTPUT
         elif [ "${{ inputs.os }}" == "Windows" ]; then
-          echo "::set-output name=target-os::win"
+          echo "target-os=win" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=target-os::${{ inputs.os }}"
+          echo "target-os=${{ inputs.os }}" >> $GITHUB_OUTPUT
         fi
 
         if [ "${{ inputs.arch }}" == "amd64" ]; then
-          echo "::set-output name=target-arch::x64"
+          echo "target-arch=x64" >> $GITHUB_OUTPUT
         elif [ "${{ inputs.arch }}" == "aarch64" ]; then
-          echo "::set-output name=target-arch::arm64"
+          echo "target-arch=arm64" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=target-arch::${{ inputs.arch }}"
+          echo "target-arch=${{ inputs.arch }}" >> $GITHUB_OUTPUT
         fi
 
-        echo "::set-output name=target-node::${{ inputs.node-version }}"
+        echo "target-node=${{ inputs.node-version }}" >> $GITHUB_OUTPUT
         echo "::endgroup::"
 
     - name: Install node 16
@@ -111,12 +111,12 @@ runs:
       run: |
         echo "::group::Setting outputs"
         if [ "${{ steps.pkg-action-internal.outputs.target-os }}" == "win" ]; then
-          echo "::set-output name=file::dist/$(node -p "require('./package.json').name").exe"
+          echo "file=dist/$(node -p "require('./package.json').name").exe" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=file::dist/$(node -p "require('./package.json').name")"
+          echo "file=dist/$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
         fi
 
-        echo "::set-output name=artifact-key::${{ github.event.repository.name }}-${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }}-${{ github.sha }}"
+        echo "artifact-key=${{ github.event.repository.name }}-${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }}-${{ github.sha }}" >> $GITHUB_OUTPUT
         echo "::endgroup::"
 
     - name: Run x64 pkg command
