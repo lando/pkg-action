@@ -75,7 +75,7 @@ runs:
         elif [ "${{ inputs.os }}" == "Windows" ]; then
           echo "target-os=win" >> $GITHUB_OUTPUT
         else
-          echo "target-os=${{ inputs.os }}"
+          echo "target-os=${{ inputs.os }}" >> $GITHUB_OUTPUT
         fi
 
         if [ "${{ inputs.arch }}" == "amd64" ]; then
