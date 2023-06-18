@@ -1,0 +1,17 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Prepare release
+        uses: lando/prepare-release-action@v2
+        with:
+          sync-tags: v2

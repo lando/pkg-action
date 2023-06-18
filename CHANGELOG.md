@@ -1,3 +1,7 @@
+## v2.2.2 - [June 17, 2023](https://github.com/lando/pkg-action/releases/tag/v2.2.2)
+
+* Switched release flow over to [@lando/prepare-release-action](https://github.com/lando/prepare-release-action)
+
 ## v2.2.1 - [April 27, 2023](https://github.com/lando/pkg-action/releases/tag/v2.2.1)
 
 * Switched `set-output` and `save-state` to new `$GITHUB_OUTPUT` and `$GITHUB_STATE`. See [this](https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/)
