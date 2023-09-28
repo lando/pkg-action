@@ -1,7 +1,7 @@
 {
   "name": "@lando/pkg-action",
   "description": "A GitHub Action for 'compiling' node projects into binaries using vercel/pkg",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "Mike Pirog @pirog",
   "contributors": [
     {
