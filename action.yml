@@ -123,7 +123,7 @@ runs:
       if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-arch == 'x64'
       shell: bash
       env:
-        RUNNER_DEBUG: ${{ secrets.RUNNER_DEBUG }} || ${{ env.RUNNER_DEBUG }}
+        RUNNER_DEBUG: ${{ env.RUNNER_DEBUG }}
       run: |
         echo "$RUNNER_DEBUG"
 
