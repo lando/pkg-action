@@ -125,23 +125,24 @@ runs:
       env:
         RUNNER_DEBUG: ${{ env.RUNNER_DEBUG }}
       run: |
-        echo "$RUNNER_DEBUG"
-
         if [ "$RUNNER_DEBUG" == 1 ] || [ "$RUNNER_DEBUG" == "1" ]; then
-          echo "PKG_DEBUG=--debug" >> "$GITHUB_ENV"
+          pkg \
+          --config ${{ inputs.config }} \
+          --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+          --out-path dist \
+          --debug \
+          ${{ inputs.options }} \
+          ${{ inputs.entrypoint }} \
         else
-          echo "PKG_DEBUG=" >> "$GITHUB_ENV"
+          pkg \
+          --config ${{ inputs.config }} \
+          --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+          --out-path dist \
+          ${{ inputs.options }} \
+          ${{ inputs.entrypoint }} \
         fi
-        pkg "$PKG_DEBUG" \
-        --config ${{ inputs.config }} \
-        --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
-        --out-path dist \
-        ${{ inputs.options }} \
-        ${{ inputs.entrypoint }} \
-
         stat ${{ steps.pkg-action.outputs.file }}
         echo "$PKG_DEBUG"
-
         FAIL
 
     - name: Run arm64 pkg command
@@ -166,12 +167,22 @@ runs:
           yarn global add pkg@${{ inputs.pkg }} --prefix /usr/local
           pkg --version
         run: |
-          pkg \
-          --config ${{ inputs.config }} \
-          --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
-          --out-path dist \
-          ${{ inputs.options }} \
-          ${{ inputs.entrypoint }}
+          if [ "$RUNNER_DEBUG" == 1 ] || [ "$RUNNER_DEBUG" == "1" ]; then
+            pkg \
+            --config ${{ inputs.config }} \
+            --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+            --out-path dist \
+            --debug \
+            ${{ inputs.options }} \
+            ${{ inputs.entrypoint }} \
+          else
+            pkg \
+            --config ${{ inputs.config }} \
+            --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+            --out-path dist \
+            ${{ inputs.options }} \
+            ${{ inputs.entrypoint }} \
+          fi
           stat ${{ steps.pkg-action.outputs.file }}
 
     - name: Upload ${{ steps.pkg-action.outputs.artifact-key }}
