@@ -127,18 +127,17 @@ runs:
       run: |
         echo "$RUNNER_DEBUG"
 
-        if [ $RUNNER_DEBUG == 1 ] || [ "$RUNNER_DEBUG" == "1" ]; then
+        if [ "$RUNNER_DEBUG" == 1 ] || [ "$RUNNER_DEBUG" == "1" ]; then
           echo "PKG_DEBUG=--debug" >> "$GITHUB_ENV"
         else
           echo "PKG_DEBUG=" >> "$GITHUB_ENV"
         fi
-        pkg \
+        pkg "$PKG_DEBUG \
         --config ${{ inputs.config }} \
         --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
         --out-path dist \
         ${{ inputs.options }} \
         ${{ inputs.entrypoint }} \
-        "$PKG_DEBUG"
 
         stat ${{ steps.pkg-action.outputs.file }}
         echo "$PKG_DEBUG"
