@@ -32,7 +32,7 @@ inputs:
   pkg:
     description: "The version on @vercel/pkg to use"
     required: false
-    default: "5.8.0"
+    default: "5.8.1"
   test:
     description: "Hidden flag for input testing"
     default: false

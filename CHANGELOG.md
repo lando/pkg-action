@@ -1,3 +1,7 @@
+## v2.2.3 - [September 27, 2023](https://github.com/lando/pkg-action/releases/tag/v2.2.3)
+
+* Bumped default to `pkg@5.8.0`
+
 ## v2.2.2 - [June 17, 2023](https://github.com/lando/pkg-action/releases/tag/v2.2.2)
 
 * Switched release flow over to [@lando/prepare-release-action](https://github.com/lando/prepare-release-action)
