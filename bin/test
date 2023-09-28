@@ -4,7 +4,5 @@
 
 const path = require('path');
 const package = require(path.resolve(__dirname, '..', 'package.json'));
-const argv = require('@lando/argv');
-argv.getOption('--debug', {defaultValue: true});
 
 console.log(`v${package.version}`);

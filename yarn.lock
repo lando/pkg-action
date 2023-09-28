@@ -2,7 +2,3 @@
 # yarn lockfile v1
 
 
-"@lando/argv@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@lando/argv/-/argv-1.1.2.tgz#e0abe88428ebbdba01eddce84f9fc3f72157e81d"
-  integrity sha512-b3d4zF1QBrFgUCFxEb48b0hse98wRhfnnydFsKXTcQc4aogfCBZc9wbgktLrs6TUtLKvU57YtlfNU4ack1ll7w==
