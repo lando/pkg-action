@@ -167,7 +167,6 @@ runs:
           --config ${{ inputs.config }} \
           --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
           --out-path dist \
-          --debug \
           ${{ inputs.options }} \
           ${{ inputs.entrypoint }}
           stat ${{ steps.pkg-action.outputs.file }}
