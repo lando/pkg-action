@@ -132,14 +132,14 @@ runs:
           --out-path dist \
           --debug \
           ${{ inputs.options }} \
-          ${{ inputs.entrypoint }} \
+          ${{ inputs.entrypoint }}
         else
           pkg \
           --config ${{ inputs.config }} \
           --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
           --out-path dist \
           ${{ inputs.options }} \
-          ${{ inputs.entrypoint }} \
+          ${{ inputs.entrypoint }}
         fi
         stat ${{ steps.pkg-action.outputs.file }}
         echo "$PKG_DEBUG"
@@ -174,14 +174,14 @@ runs:
             --out-path dist \
             --debug \
             ${{ inputs.options }} \
-            ${{ inputs.entrypoint }} \
+            ${{ inputs.entrypoint }}
           else
             pkg \
             --config ${{ inputs.config }} \
             --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
             --out-path dist \
             ${{ inputs.options }} \
-            ${{ inputs.entrypoint }} \
+            ${{ inputs.entrypoint }}
           fi
           stat ${{ steps.pkg-action.outputs.file }}
 
