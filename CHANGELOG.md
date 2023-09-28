@@ -1,6 +1,7 @@
 ## v2.2.3 - [September 27, 2023](https://github.com/lando/pkg-action/releases/tag/v2.2.3)
 
 * Bumped default to `pkg@5.8.0`
+* Disabled `--debug` by default. Added support for debug toggling via https://github.blog/changelog/2022-05-24-github-actions-re-run-jobs-with-debug-logging
 
 ## v2.2.2 - [June 17, 2023](https://github.com/lando/pkg-action/releases/tag/v2.2.2)
 
