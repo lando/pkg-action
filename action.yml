@@ -129,7 +129,7 @@ runs:
         echo "$RUNNER_DEBUG"
         echo "${{ env.RUNNER_DEBUG }}"
 
-        if [ "${{ env.RUNNER_DEBUG }}" == 1 ] || [ "${{ env.RUNNER_DEBUG }" == '1' ]; then
+        if [ ${{ env.RUNNER_DEBUG }} == 1 ] || [ "${{ env.RUNNER_DEBUG }}" == "1" ]; then
           echo "PKG_DEBUG=--debug" >> "$GITHUB_ENV"
         else
           echo "PKG_DEBUG=--debug"
