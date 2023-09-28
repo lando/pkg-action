@@ -43,11 +43,14 @@ jobs:
           - x64
           - arm64
         node-version:
-          - 16
+          - "16"
         os:
           - linux
           - macos
           - win
+        pkg-version:
+          - "5.8.0"
+          - "5.8.1"
     steps:
       - name: Checkout action code
         uses: actions/checkout@v3
@@ -59,4 +62,5 @@ jobs:
           entrypoint: bin/test
           node-version: ${{ matrix.node-version }}
           os: ${{ matrix.os }}
+          pkg: ${{ matrix.pkg-version }}
           upload: false

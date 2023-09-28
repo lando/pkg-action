@@ -147,8 +147,6 @@ runs:
       if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-arch == 'arm64'
       uses: uraimo/run-on-arch-action@v2
       with:
-        env: |
-          RUNNER_DEBUG: "${{ env.RUNNER_DEBUG }}"
         arch: aarch64
         # @TODO: eventually we need to get this to work on ubuntu20.04 for build parity but we are using
         # 18.04 because it was easier to get working, apparently there is a bug in 20.04s gpg?
@@ -157,7 +155,7 @@ runs:
         # We need to install node and yarn "again" because they dont exist inside our build container
         install: |
           apt update && apt -y install curl
-          curl -fsSL "https://deb.nodesource.com/setup_${{ inputs.node-version }}.x" | bash -
+          curl -fsSL "https://deb.nodesource.com/setup_14.x" | bash -
           apt-get install -y nodejs
           curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
           echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -165,22 +163,12 @@ runs:
           yarn global add pkg@${{ inputs.pkg }} --prefix /usr/local
           pkg --version
         run: |
-          if [ "$RUNNER_DEBUG" == 1 ] || [ "$RUNNER_DEBUG" == "1" ]; then
-            pkg \
-            --config ${{ inputs.config }} \
-            --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
-            --out-path dist \
-            --debug \
-            ${{ inputs.options }} \
-            ${{ inputs.entrypoint }}
-          else
-            pkg \
-            --config ${{ inputs.config }} \
-            --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
-            --out-path dist \
-            ${{ inputs.options }} \
-            ${{ inputs.entrypoint }}
-          fi
+          pkg \
+          --config ${{ inputs.config }} \
+          --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+          --out-path dist \
+          ${{ inputs.options }} \
+          ${{ inputs.entrypoint }}
           stat ${{ steps.pkg-action.outputs.file }}
 
     - name: Upload ${{ steps.pkg-action.outputs.artifact-key }}

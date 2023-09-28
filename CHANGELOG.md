@@ -1,3 +1,7 @@
+## v3.0.1 - [September 28, 2023](https://github.com/lando/pkg-action/releases/tag/v3.0.1)
+
+* Reverted `node-sync` do to extreme slowness using `node16` in `arm64` environment
+
 ## v3.0.0 - [September 28, 2023](https://github.com/lando/pkg-action/releases/tag/v3.0.0)
 
 ### New Features
