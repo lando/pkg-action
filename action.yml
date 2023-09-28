@@ -86,7 +86,7 @@ runs:
           echo "target-arch=${{ inputs.arch }}" >> $GITHUB_OUTPUT
         fi
 
-        echo "target-node=${{ inputs.node-version }}" >> $GITHUB_OUTPUT
+        echo "target-node=node${{ inputs.node-version }}" >> $GITHUB_OUTPUT
         echo "::endgroup::"
 
     - name: Install node ${{ inputs.node-version }}
@@ -116,7 +116,7 @@ runs:
           echo "file=dist/$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
         fi
 
-        echo "artifact-key=${{ github.event.repository.name }}-node${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+        echo "artifact-key=${{ github.event.repository.name }}-${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }}-${{ github.sha }}" >> $GITHUB_OUTPUT
         echo "::endgroup::"
 
     - name: Run x64 pkg command
@@ -128,7 +128,7 @@ runs:
         if [ "$RUNNER_DEBUG" == 1 ] || [ "$RUNNER_DEBUG" == "1" ]; then
           pkg \
           --config ${{ inputs.config }} \
-          --target=node${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+          --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
           --out-path dist \
           --debug \
           ${{ inputs.options }} \
@@ -136,7 +136,7 @@ runs:
         else
           pkg \
           --config ${{ inputs.config }} \
-          --target=node${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+          --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
           --out-path dist \
           ${{ inputs.options }} \
           ${{ inputs.entrypoint }}
@@ -149,7 +149,6 @@ runs:
       with:
         env: |
           RUNNER_DEBUG: "${{ env.RUNNER_DEBUG }}"
-          NODE_VERSION: "${{ inputs.node-version }}"
         arch: aarch64
         # @TODO: eventually we need to get this to work on ubuntu20.04 for build parity but we are using
         # 18.04 because it was easier to get working, apparently there is a bug in 20.04s gpg?
@@ -158,7 +157,7 @@ runs:
         # We need to install node and yarn "again" because they dont exist inside our build container
         install: |
           apt update && apt -y install curl
-          curl -fsSL "https://deb.nodesource.com/setup_${NODE_VERSION}.x" | bash -
+          curl -fsSL "https://deb.nodesource.com/setup_${{ inputs.node-version }}.x" | bash -
           apt-get install -y nodejs
           curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
           echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -169,7 +168,7 @@ runs:
           if [ "$RUNNER_DEBUG" == 1 ] || [ "$RUNNER_DEBUG" == "1" ]; then
             pkg \
             --config ${{ inputs.config }} \
-            --target=node${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+            --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
             --out-path dist \
             --debug \
             ${{ inputs.options }} \
@@ -177,7 +176,7 @@ runs:
           else
             pkg \
             --config ${{ inputs.config }} \
-            --target=node${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
+            --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
             --out-path dist \
             ${{ inputs.options }} \
             ${{ inputs.entrypoint }}
