@@ -132,7 +132,7 @@ runs:
         else
           echo "PKG_DEBUG=" >> "$GITHUB_ENV"
         fi
-        pkg "$PKG_DEBUG \
+        pkg "$PKG_DEBUG" \
         --config ${{ inputs.config }} \
         --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
         --out-path dist \
