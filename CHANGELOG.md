@@ -1,3 +1,16 @@
+## v3.0.0 - [September 28, 2023](https://github.com/lando/pkg-action/releases/tag/v3.0.0)
+
+### New Features
+
+* Bumped default `pkg` input to `pkg@5.8.0`
+* Bumped default `node-version` input to `16`
+* Disabled `--debug` by default. Added support for debug toggling via https://github.blog/changelog/2022-05-24-github-actions-re-run-jobs-with-debug-logging
+* Synced `node-version` usage so it is used in all relevant build environments
+
+### **BREAKING CHANGES**
+
+* `node-version` input is now just a major version eg `16` instead of `node16`
+
 ## v2.2.2 - [June 17, 2023](https://github.com/lando/pkg-action/releases/tag/v2.2.2)
 
 * Switched release flow over to [@lando/prepare-release-action](https://github.com/lando/prepare-release-action)

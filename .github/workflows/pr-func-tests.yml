@@ -18,6 +18,7 @@ jobs:
   basic-cross-platform-test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os:
           - macos-11
@@ -36,12 +37,13 @@ jobs:
   basic-cross-everything-test:
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
         arch:
           - x64
           - arm64
         node-version:
-          - node16
+          - 16
         os:
           - linux
           - macos
