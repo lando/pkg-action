@@ -122,8 +122,14 @@ runs:
     - name: Run x64 pkg command
       if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-arch == 'x64'
       shell: bash
+      env:
+        RUNNER_DEBUG: ${{ env.RUNNER_DEBUG }}
       run: |
-        if [[ ${{ env.RUNNER_DEBUG }} == 1 || ${{ env.RUNNER_DEBUG }} == '1' ]]; then
+        echo "$PKG_DEBUG"
+        echo "$RUNNER_DEBUG"
+        echo "${{ env.RUNNER_DEBUG }}"
+
+        if [[ "${{ env.RUNNER_DEBUG }}" == 1 || "${{ env.RUNNER_DEBUG }" == '1' ]]; then
           echo "PKG_DEBUG=--debug" >> "$GITHUB_ENV"
         else
           echo "PKG_DEBUG=--debug"
@@ -136,8 +142,7 @@ runs:
         ${{ inputs.entrypoint }} \
         $PKG_DEBUG
         stat ${{ steps.pkg-action.outputs.file }}
-        echo "$PKG_DEBUG"
-        echo "RUNNER_DEBUG"
+
         FAIL
 
     - name: Run arm64 pkg command
