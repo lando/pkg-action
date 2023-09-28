@@ -138,7 +138,7 @@ runs:
         --out-path dist \
         ${{ inputs.options }} \
         ${{ inputs.entrypoint }} \
-        "PKG_DEBUG"
+        "$PKG_DEBUG"
 
         stat ${{ steps.pkg-action.outputs.file }}
         echo "$PKG_DEBUG"
