@@ -31,10 +31,10 @@ These keys are set to sane defaults but can be modified as needed.
 |---|---|---|---|
 | `arch` | The architecture to build for. | `amd64` | `x64` \| `amd64` \| `aarch64` \| `arm64` |
 | `config` | The config file to use. | `package.json` | `config.json` |
-| `node-version` | The node version to package with. | `node14` | `node8` \| `node10` \| `node12` \| `node14` \| `node16` \| `latest` |
+| `node-version` | The node version to package with. | `16` | `8` \| `10` \| `12` \| `14` \| `16` |
 | `options` | Additional options and flags to pass into pkg. | `null` | Additional [pkg options](https://github.com/vercel/pkg#usage) |
 | `os` | The operating system to build for. | `${{ runner.os }}` | `linux` \| `macos` \| `win` |
-| `pkg` | The version on @vercel/pkg to use. | `5.8.0` | `latest` |
+| `pkg` | The version on @vercel/pkg to use. | `5.8.1` | `latest` |
 | `upload` | Upload the artifacts. Useful if you need to grab them for downstream for things like code signing. | `true` | `false` \| `true` |
 
 ## Outputs
@@ -55,7 +55,7 @@ outputs:
 
 ```yaml
 name: Package into node binary
-uses: lando/pkg-action@v2
+uses: lando/pkg-action@v3
 with:
   entrypoint: bin/cli
 ```
@@ -65,12 +65,12 @@ with:
 **ALL OPTIONS**
 ```yaml
 name: Package into node binary
-uses: lando/pkg-action@v2
+uses: lando/pkg-action@v3
 with:
   entrypoint: bin/cli
   arch: arm64
   config: package.json
-  node-version: node16
+  node-version: 14
   options: -C
   os: win
   upload: false
@@ -85,7 +85,7 @@ strategy:
       - x64
       - arm64
     node-version:
-      - node16
+      - 16
     os:
       - linux
       - macos

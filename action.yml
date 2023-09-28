@@ -182,7 +182,6 @@ runs:
             ${{ inputs.entrypoint }}
           fi
           stat ${{ steps.pkg-action.outputs.file }}
-          fail
 
     - name: Upload ${{ steps.pkg-action.outputs.artifact-key }}
       if: inputs.test != 'true' && inputs.upload == 'true'

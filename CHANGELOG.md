@@ -5,6 +5,7 @@
 * Bumped default `pkg` input to `pkg@5.8.0`
 * Bumped default `node-version` input to `16`
 * Disabled `--debug` by default. Added support for debug toggling via https://github.blog/changelog/2022-05-24-github-actions-re-run-jobs-with-debug-logging
+* Synced `node-version` usage so it is used in all relevant build environments
 
 ### **BREAKING CHANGES**
 
