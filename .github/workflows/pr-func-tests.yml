@@ -43,7 +43,7 @@ jobs:
           - x64
           - arm64
         node-version:
-          - node16
+          - 16
         os:
           - linux
           - macos
