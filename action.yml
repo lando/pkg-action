@@ -142,8 +142,6 @@ runs:
           ${{ inputs.entrypoint }}
         fi
         stat ${{ steps.pkg-action.outputs.file }}
-        echo "$PKG_DEBUG"
-        FAIL
 
     - name: Run arm64 pkg command
       if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-arch == 'arm64'
