@@ -122,8 +122,10 @@ runs:
     - name: Run x64 pkg command
       if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-arch == 'x64'
       shell: bash
+      env:
+        RUNNER_DEBUG: ${{ env.RUNNER_DEBUG }}
       run: |
-        if [ "${{ env.RUNNER_DEBUG }}" == 1 ] || [ "${{ env.RUNNER_DEBUG }}" == "1" ]; then
+        if [ "$RUNNER_DEBUG" == 1 ] || [ "$RUNNER_DEBUG" == "1" ]; then
           pkg \
           --config ${{ inputs.config }} \
           --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
@@ -141,12 +143,12 @@ runs:
         fi
         stat ${{ steps.pkg-action.outputs.file }}
 
-        fail
-
     - name: Run arm64 pkg command
       if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-arch == 'arm64'
       uses: uraimo/run-on-arch-action@v2
       with:
+        env: |
+          RUNNER_DEBUG: "${{ env.RUNNER_DEBUG }}""
         arch: aarch64
         # @TODO: eventually we need to get this to work on ubuntu20.04 for build parity but we are using
         # 18.04 because it was easier to get working, apparently there is a bug in 20.04s gpg?
@@ -180,6 +182,7 @@ runs:
             ${{ inputs.entrypoint }}
           fi
           stat ${{ steps.pkg-action.outputs.file }}
+          fail
 
     - name: Upload ${{ steps.pkg-action.outputs.artifact-key }}
       if: inputs.test != 'true' && inputs.upload == 'true'
