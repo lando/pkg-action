@@ -1,3 +1,9 @@
+## v4.0.0 - [December 4, 2023](https://github.com/lando/pkg-action/releases/tag/v4.0.0)
+
+### **BREAKING CHANGES**
+
+* `pkg` input now takes any valid spec eg `@yao-pkg/pkg@5.10.0` as opposed to just the `versions`
+
 ## v3.0.1 - [September 28, 2023](https://github.com/lando/pkg-action/releases/tag/v3.0.1)
 
 * Reverted `node-sync` do to extreme slowness using `node16` in `arm64` environment
