@@ -48,9 +48,10 @@ jobs:
           - linux
           - macos
           - win
-        pkg-version:
-          - "5.8.0"
-          - "5.8.1"
+        pkg:
+          - "pkg@5.8.0"
+          - "pkg@5.8.1"
+          - "@yao-pkg/pkg@5.10.0"
     steps:
       - name: Checkout action code
         uses: actions/checkout@v3
@@ -62,5 +63,5 @@ jobs:
           entrypoint: bin/test
           node-version: ${{ matrix.node-version }}
           os: ${{ matrix.os }}
-          pkg: ${{ matrix.pkg-version }}
+          pkg: ${{ matrix.pkg }}
           upload: false

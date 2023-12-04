@@ -34,7 +34,7 @@ These keys are set to sane defaults but can be modified as needed.
 | `node-version` | The node version to package with. | `16` | `8` \| `10` \| `12` \| `14` \| `16` |
 | `options` | Additional options and flags to pass into pkg. | `null` | Additional [pkg options](https://github.com/vercel/pkg#usage) |
 | `os` | The operating system to build for. | `${{ runner.os }}` | `linux` \| `macos` \| `win` |
-| `pkg` | The version on @vercel/pkg to use. | `5.8.1` | `latest` |
+| `pkg` | The `pkg` package` to use. | `pkg@5.8.1` | `latest` |
 | `upload` | Upload the artifacts. Useful if you need to grab them for downstream for things like code signing. | `true` | `false` \| `true` |
 
 ## Outputs
@@ -55,7 +55,7 @@ outputs:
 
 ```yaml
 name: Package into node binary
-uses: lando/pkg-action@v3
+uses: lando/pkg-action@v4
 with:
   entrypoint: bin/cli
 ```
@@ -65,7 +65,7 @@ with:
 **ALL OPTIONS**
 ```yaml
 name: Package into node binary
-uses: lando/pkg-action@v3
+uses: lando/pkg-action@v4
 with:
   entrypoint: bin/cli
   arch: arm64
@@ -74,6 +74,7 @@ with:
   options: -C
   os: win
   upload: false
+  pkg: "@yao-pkg/pkg@5.10.0"
 ```
 
 **CROSS COMPILE ON ALL THE THINGS**

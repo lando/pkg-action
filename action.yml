@@ -32,7 +32,7 @@ inputs:
   pkg:
     description: "The version on @vercel/pkg to use"
     required: false
-    default: "5.8.1"
+    default: "pkg@5.8.1"
   test:
     description: "Hidden flag for input testing"
     default: false
@@ -95,10 +95,10 @@ runs:
         node-version: ${{ inputs.node-version }}
         cache: npm
 
-    - name: Install pkg ${{ inputs.pkg }}
+    - name: Install ${{ inputs.pkg }}
       shell: bash
       run: |
-        npm install -g pkg@${{ inputs.pkg }}
+        npm install -g ${{ inputs.pkg }}
         if pkg --version >/dev/null; then
           echo "::notice title=pkg installed::Using version $(pkg --version)"
         else
@@ -160,7 +160,7 @@ runs:
           curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
           echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
           apt update && apt -y install yarn
-          yarn global add pkg@${{ inputs.pkg }} --prefix /usr/local
+          yarn global add ${{ inputs.pkg }} --prefix /usr/local
           pkg --version
         run: |
           pkg \
