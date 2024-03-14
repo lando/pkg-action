@@ -12,6 +12,9 @@ jobs:
         runner:
           - macos-14
           - ubuntu-22.04
+        arch:
+          - x64
+          - arm64
         os:
           - linux
           - macos
@@ -28,5 +31,6 @@ jobs:
         uses: ./
         with:
           entrypoint: bin/test
+          arch: ${{ matrix.arch }}
           os: ${{ matrix.os }}
           upload: false
