@@ -4,7 +4,23 @@ on:
   pull_request:
 
 jobs:
-  basic-armed-tests:
+  basic-arm-test:
+    runs-on: macos-14
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v3
+      - name: Run Pkg Action
+        uses: ./
+        with:
+          entrypoint: bin/test
+          upload: false
+      - name: Test Bin
+        run: |
+          chmod +x dist/@lando/pkg-action
+          dist/@lando/pkg-action --version
+          file dist/@lando/pkg-action | grep "Mach-O 64-bit executable arm64"
+
+  basic-cross-os-armed-tests:
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -12,17 +28,10 @@ jobs:
         runner:
           - macos-14
           - ubuntu-22.04
-        arch:
-          - x64
-          - arm64
         os:
           - linux
           - macos
           - win
-        pkg:
-          - "pkg@5.8.0"
-          - "pkg@5.8.1"
-          - "@yao-pkg/pkg@5.10.0"
 
     steps:
       - name: Checkout action code
@@ -31,6 +40,6 @@ jobs:
         uses: ./
         with:
           entrypoint: bin/test
-          arch: ${{ matrix.arch }}
+          arch: arm64
           os: ${{ matrix.os }}
           upload: false

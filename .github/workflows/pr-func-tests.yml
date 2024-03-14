@@ -52,7 +52,7 @@ jobs:
         pkg:
           - "pkg@5.8.0"
           - "pkg@5.8.1"
-          - "@yao-pkg/pkg@5.10.0"
+          - "@yao-pkg/pkg@5.11.5"
     steps:
       - name: Checkout action code
         uses: actions/checkout@v3
