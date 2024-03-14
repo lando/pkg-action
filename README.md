@@ -1,8 +1,8 @@
 # Pkg Action
 
-This is a GitHub action that allows you to "compile" node projects with [pkg](https://github.com/vercel/pkg). It supports:
+This is a GitHub action that allows you to "compile" node projects with [@yao-pkg/pkg](https://github.com/yao-pkg/pkg). It supports:
 
-* All `pkg` supported node versions
+* All `@yao-pkg/pkg` supported node versions
 * `x64|amd64` and `aarch64|arm64`
 * `macos|linux|windows`.
 
@@ -29,12 +29,12 @@ These keys are set to sane defaults but can be modified as needed.
 
 | Name | Description | Default | Example |
 |---|---|---|---|
-| `arch` | The architecture to build for. | `amd64` | `x64` \| `amd64` \| `aarch64` \| `arm64` |
+| `arch` | The architecture to build for. | `${{ runner.arch }}` | `x64` \| `amd64` \| `aarch64` \| `arm64` |
 | `config` | The config file to use. | `package.json` | `config.json` |
-| `node-version` | The node version to package with. | `16` | `8` \| `10` \| `12` \| `14` \| `16` |
+| `node-version` | The node version to package with. | `20` | `8` \| `10` \| `12` \| `14` \| `16` \| `18` \| `20` |
 | `options` | Additional options and flags to pass into pkg. | `null` | Additional [pkg options](https://github.com/vercel/pkg#usage) |
 | `os` | The operating system to build for. | `${{ runner.os }}` | `linux` \| `macos` \| `win` |
-| `pkg` | The `pkg` package` to use. | `pkg@5.8.1` | `latest` |
+| `pkg` | The `pkg` package` to use. | `@yao-pkg/pkg@5.11.5` | `pkg@5.8.1` |
 | `upload` | Upload the artifacts. Useful if you need to grab them for downstream for things like code signing. | `true` | `false` \| `true` |
 
 ## Outputs
