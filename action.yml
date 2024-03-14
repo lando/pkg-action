@@ -113,9 +113,10 @@ runs:
       shell: bash
       run: |
         if [ "${{ steps.pkg-action-internal.outputs.target-arch }}" != "${{ steps.pkg-action-internal.outputs.runner-arch }}" ]; then
-          if [ "${{ runner.os }}" != "Linux" ];
-          echo "::error title=Emulation only possible on Linux!::Emulating ${{ steps.pkg-action-internal.outputs.target-arch }} is only possible on Linux runners!"
-          exit 48
+          if [ "${{ runner.os }}" != "Linux" ]; then
+            echo "::error title=Emulation only possible on Linux!::Emulating ${{ steps.pkg-action-internal.outputs.target-arch }} is only possible on Linux runners!"
+            exit 48
+          fi
         fi
 
     - name: Install node ${{ inputs.node-version }}
