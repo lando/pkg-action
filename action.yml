@@ -1,5 +1,5 @@
 name: "Pkg Action"
-description: "A GitHub Action for 'compiling' node projects into binaries using vercel/pkg."
+description: "A GitHub Action for 'compiling' node projects into binaries using vercel/pkg or equivalent"
 branding:
   color: purple
   icon: package
@@ -13,7 +13,7 @@ inputs:
   arch:
     description: "The architecture to build for x64|amd64|aarch64|arm64"
     required: false
-    default: amd64
+    default: ${{ runner.arch }}
   config:
     description: "The config file to use"
     required: false
@@ -21,7 +21,7 @@ inputs:
   node-version:
     description: "The node version to package with"
     required: false
-    default: 16
+    default: "20"
   options:
     description: "Additional options and flags to pass into pkg"
     required: false
@@ -30,9 +30,9 @@ inputs:
     required: false
     default: ${{ runner.os }}
   pkg:
-    description: "The version on @vercel/pkg to use"
+    description: "The version of pkg to use"
     required: false
-    default: "pkg@5.8.1"
+    default: "@yao-pkg/pkg@5.11.5"
   test:
     description: "Hidden flag for input testing"
     default: false
@@ -77,6 +77,8 @@ runs:
         else
           echo "target-os=${{ inputs.os }}" >> $GITHUB_OUTPUT
         fi
+
+        echo "${{ inputs.arch }}"
 
         if [ "${{ inputs.arch }}" == "amd64" ]; then
           echo "target-arch=x64" >> $GITHUB_OUTPUT

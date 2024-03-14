@@ -5,7 +5,7 @@ on:
 
 jobs:
   test-default-inputs:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout action code
         uses: actions/checkout@v3
@@ -38,7 +38,7 @@ jobs:
         shell: bash
 
   test-arch-inputs:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         arch:
@@ -97,8 +97,8 @@ jobs:
     strategy:
       matrix:
         os:
-          - macos-11
-          - ubuntu-20.04
+          - macos-13
+          - ubuntu-22.04
           - windows-2022
 
     steps:
@@ -139,7 +139,7 @@ jobs:
         shell: bash
 
   test-os-input:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         os:
