@@ -84,8 +84,9 @@ runs:
           echo "runner-arch=x64" >> $GITHUB_OUTPUT
         elif [ "${{ runner.arch }}" == "ARM" ]; then
           echo "runner-arch=arm64" >> $GITHUB_OUTPUT
-        elif [ "${{ inputs.arch }}" == "ARM64" ]; then
+        elif [ "${{ runner.arch }}" == "ARM64" ]; then
           echo "runner-arch=arm64" >> $GITHUB_OUTPUT
+        else
           echo "runner-arch=${{ runner.arch }}" >> $GITHUB_OUTPUT
         fi
 
@@ -112,8 +113,9 @@ runs:
       shell: bash
       run: |
         if [ "${{ steps.pkg-action-internal.outputs.target-arch }}" != "${{ steps.pkg-action-internal.outputs.runner-arch }}" ]; then
-          echo "::notice title=Emulation needed::Emulating ${{ steps.pkg-action-internal.outputs.target-arch }} on ${{ steps.pkg-action-internal.outputs.runner-arch }}"
-          # exit 47
+          if [ "${{ runner.os }}" != "Linux" ];
+          echo "::error title=Emulation only possible on Linux!::Emulating ${{ steps.pkg-action-internal.outputs.target-arch }} is only possible on Linux runners!"
+          exit 48
         fi
 
     - name: Install node ${{ inputs.node-version }}
