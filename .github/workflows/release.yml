@@ -14,4 +14,4 @@ jobs:
       - name: Prepare release
         uses: lando/prepare-release-action@v2
         with:
-          sync-tags: v4
+          sync-tags: v5
