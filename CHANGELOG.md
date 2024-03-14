@@ -1,3 +1,13 @@
+## v5.0.0 - [March 14, 2023](https://github.com/lando/pkg-action/releases/tag/v5.0.0)
+
+### **BREAKING CHANGES**
+
+* Added support for `node20`
+* Changed default `node` version to `node20`
+* Changed default `arch` to `${{ runner.arch }}`
+* Improved `arch` behavior so emulation is only used if needed
+* Updated default `pkg` package to `@yao-pkg/pkg@5.11.5` since `vercel/pkg` is **DEPRECATED**
+
 ## v4.0.0 - [December 4, 2023](https://github.com/lando/pkg-action/releases/tag/v4.0.0)
 
 ### **BREAKING CHANGES**
