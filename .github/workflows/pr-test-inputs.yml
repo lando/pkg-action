@@ -29,7 +29,7 @@ jobs:
       - name: "TEST: should set the correct artifact-key"
         if: always()
         run: |
-          if [ "${{ steps.default-input-tests.outputs.artifact-key }}" == "pkg-action-node16-linux-x64-${{ github.sha }}" ]; then
+          if [ "${{ steps.default-input-tests.outputs.artifact-key }}" == "pkg-action-node20-linux-x64-${{ github.sha }}" ]; then
             echo "::notice title=TEST PASSED::Output artifact key set from defaults correctly"
           else
             echo "::error title=TEST FAILED!::Output artifact key not set correctly"
