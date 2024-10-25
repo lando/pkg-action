@@ -1,3 +1,8 @@
+
+## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
+
+* Updated default `pkg` package to `@yao-pkg/pkg@5.16.1`
+
 ## v5.0.0 - [March 14, 2023](https://github.com/lando/pkg-action/releases/tag/v5.0.0)
 
 ### **BREAKING CHANGES**
