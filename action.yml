@@ -32,7 +32,7 @@ inputs:
   pkg:
     description: "The version of pkg to use"
     required: false
-    default: "@yao-pkg/pkg@5.11.5"
+    default: "@yao-pkg/pkg@5.16.1"
   test:
     description: "Hidden flag for input testing"
     default: false
