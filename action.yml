@@ -13,7 +13,7 @@ inputs:
   arch:
     description: "The architecture to build for x64|amd64|aarch64|arm64"
     required: false
-    default: ${{ runner.arch }}
+    default: "${{ runner.arch }}""
   config:
     description: "The config file to use"
     required: false
@@ -28,7 +28,7 @@ inputs:
   os:
     description: "The operating system to build for win|linux|macos"
     required: false
-    default: ${{ runner.os }}
+    default: "${{ runner.os }}"
   pkg:
     description: "The version of pkg to use"
     required: false
@@ -38,9 +38,13 @@ inputs:
     default: false
     required: false
   upload:
-    description: "Upload the artifacts. Useful if you need to grab them for downstream for things like code signing."
+    description: "Upload the artifact. Useful if you need to grab them for downstream things like code signing."
     required: false
     default: true
+  upload-key:
+    description: "Upload key for the artifact. Useful if want to override outputs.artifact-key with a specific value."
+    required: false
+    default: ""
 
 outputs:
   file:
@@ -146,7 +150,12 @@ runs:
           echo "file=dist/$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
         fi
 
-        echo "artifact-key=${{ github.event.repository.name }}-${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+        if [[ -n "${{ inputs.upload-key }}" ]]; then
+          echo "artifact-key=${{ inputs.upload-key }}" >> $GITHUB_OUTPUT
+        else
+          echo "artifact-key=${{ github.event.repository.name }}-${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+        fi
+
         echo "::endgroup::"
 
     - name: Run native ${{ steps.pkg-action-internal.outputs.target-arch }} pkg command
