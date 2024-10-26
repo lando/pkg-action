@@ -13,7 +13,7 @@ inputs:
   arch:
     description: "The architecture to build for x64|amd64|aarch64|arm64"
     required: false
-    default: "${{ runner.arch }}""
+    default: "${{ runner.arch }}"
   config:
     description: "The config file to use"
     required: false
