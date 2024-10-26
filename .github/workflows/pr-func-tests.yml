@@ -15,14 +15,13 @@ jobs:
         with:
           entrypoint: bin/test
 
-  basic-func-test-custom-key:
+  basic-func-upload-key-test:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout action code
         uses: actions/checkout@v4
       - name: Run Pkg Action
         uses: ./
-        id: basic-func-test
         with:
           entrypoint: bin/test
           upload-key: something-else-${{ github.sha }}
@@ -42,7 +41,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Run Pkg Action
         uses: ./
-        id: basic-func-test
         with:
           entrypoint: bin/test
           upload: false
@@ -56,7 +54,7 @@ jobs:
           - x64
           - arm64
         node-version:
-          - "20"
+          - "16"
         os:
           - linux
           - macos
@@ -70,7 +68,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Run Pkg Action
         uses: ./
-        id: basic-func-test
         with:
           arch: ${{ matrix.arch }}
           entrypoint: bin/test
@@ -83,15 +80,15 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - basic-func-test
-      - basic-func-test-custom-key
+      - basic-func-upload-key-test
     env:
       TERM: xterm
     strategy:
       fail-fast: false
       matrix:
         file:
-          - something
-          - something-else
+          - bob
+          - something-else-${{ github.sha }}
     steps:
         - name: Checkout code
           uses: actions/checkout@v4
@@ -100,12 +97,6 @@ jobs:
           with:
             name: ${{ matrix.file }}
             path: dist
-        - name: Download ${{ matrix.file }}
-          uses: actions/download-artifact@v3
-          with:
-            name: ${{ matrix.file }}
-            path: dist
-
         - name: Test downloads
           run: |
             echo "${{ matrix.file }}"
