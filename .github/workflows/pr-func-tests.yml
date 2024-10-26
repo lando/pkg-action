@@ -87,7 +87,7 @@ jobs:
       fail-fast: false
       matrix:
         file:
-          - bob
+          - pkg-action-node20-linux-x64-${{ github.sha }}
           - something-else-${{ github.sha }}
     steps:
         - name: Checkout code
@@ -101,7 +101,6 @@ jobs:
           run: |
             echo "${{ matrix.file }}"
             ls -lsa dist
-            # chmod +x dist/@lando/pkg-action
-            # dist/@lando/pkg-action --version
-            # file dist/@lando/pkg-action | grep "Mach-O 64-bit executable arm64"
+            chmod +x dist/pkg-action
+            dist/pkg-action --version
 
