@@ -5,15 +5,27 @@ on:
 
 jobs:
   basic-func-test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout action code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run Pkg Action
         uses: ./
         id: basic-func-test
         with:
           entrypoint: bin/test
+
+  basic-func-test-custom-key:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v4
+      - name: Run Pkg Action
+        uses: ./
+        id: basic-func-test
+        with:
+          entrypoint: bin/test
+          upload-key: something-else-${{ github.sha }}
 
   basic-cross-platform-test:
     runs-on: ${{ matrix.os }}
@@ -23,11 +35,11 @@ jobs:
         os:
           - macos-13
           - macos-14
-          - ubuntu-22.04
+          - ubuntu-24.04
           - windows-2022
     steps:
       - name: Checkout action code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run Pkg Action
         uses: ./
         id: basic-func-test
@@ -36,7 +48,7 @@ jobs:
           upload: false
 
   basic-cross-everything-test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -44,7 +56,7 @@ jobs:
           - x64
           - arm64
         node-version:
-          - "16"
+          - "20"
         os:
           - linux
           - macos
@@ -55,7 +67,7 @@ jobs:
           - "@yao-pkg/pkg@5.11.5"
     steps:
       - name: Checkout action code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run Pkg Action
         uses: ./
         id: basic-func-test
@@ -66,3 +78,39 @@ jobs:
           os: ${{ matrix.os }}
           pkg: ${{ matrix.pkg }}
           upload: false
+
+  download:
+    runs-on: ubuntu-24.04
+    needs:
+      - basic-func-test
+      - basic-func-test-custom-key
+    env:
+      TERM: xterm
+    strategy:
+      fail-fast: false
+      matrix:
+        file:
+          - something
+          - something-else
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Download ${{ matrix.file }}
+          uses: actions/download-artifact@v3
+          with:
+            name: ${{ matrix.file }}
+            path: dist
+        - name: Download ${{ matrix.file }}
+          uses: actions/download-artifact@v3
+          with:
+            name: ${{ matrix.file }}
+            path: dist
+
+        - name: Test downloads
+          run: |
+            echo "${{ matrix.file }}"
+            ls -lsa dist
+            # chmod +x dist/@lando/pkg-action
+            # dist/@lando/pkg-action --version
+            # file dist/@lando/pkg-action | grep "Mach-O 64-bit executable arm64"
+

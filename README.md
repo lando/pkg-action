@@ -36,6 +36,7 @@ These keys are set to sane defaults but can be modified as needed.
 | `os` | The operating system to build for. | `${{ runner.os }}` | `linux` \| `macos` \| `win` |
 | `pkg` | The `pkg` package` to use. | `@yao-pkg/pkg@5.11.5` | `pkg@5.8.1` |
 | `upload` | Upload the artifacts. Useful if you need to grab them for downstream for things like code signing. | `true` | `false` \| `true` |
+| `upload-key` | Upload key for the artifact. Useful if want to override outputs.artifact-key with a specific value. | `${{ github.event.repository.name }}-${{ inputs.node-version }}-${{ inputs.os }}-${{ inputs.arch }}-${{ github.sha }}` | `"my-pkg"` |
 
 ## Outputs
 
