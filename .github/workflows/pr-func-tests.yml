@@ -26,6 +26,17 @@ jobs:
           entrypoint: bin/test
           upload-key: something-else-${{ github.sha }}
 
+  basic-func-filename-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v4
+      - name: Run Pkg Action
+        uses: ./
+        with:
+          entrypoint: bin/test
+          filename: bob
+
   basic-cross-platform-test:
     runs-on: ${{ matrix.os }}
     strategy:

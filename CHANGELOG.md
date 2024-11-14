@@ -1,5 +1,6 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+* Added `inputs.filename` to customize the name of the output binary
 
 ## v5.1.0 - [October 26, 2024](https://github.com/lando/pkg-action/releases/tag/v5.1.0)
 

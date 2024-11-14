@@ -18,6 +18,10 @@ inputs:
     description: "The config file to use"
     required: false
     default: package.json
+  filename:
+    description: "The filename of the resulting binary"
+    required: false
+    default: ""
   node-version:
     description: "The node version to package with"
     required: false
@@ -110,9 +114,14 @@ runs:
           echo "target-arch=${{ inputs.arch }}" >> $GITHUB_OUTPUT
         fi
 
+        if [[ -n "${{ inputs.filename }}" ]]; then
+          echo "target-output=--output=dist/${{ inputs.filename }}" >> $GITHUB_OUTPUT
+        else
+          echo "target-output=--out-path=dist" >> $GITHUB_OUTPUT
+        fi
+
         echo "target-node=node${{ inputs.node-version }}" >> $GITHUB_OUTPUT
         echo "::endgroup::"
-
     - name: Validate arch emulation requirements
       shell: bash
       run: |
@@ -122,13 +131,11 @@ runs:
             exit 48
           fi
         fi
-
     - name: Install node ${{ inputs.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
         cache: npm
-
     - name: Install ${{ inputs.pkg }}
       shell: bash
       run: |
@@ -138,17 +145,22 @@ runs:
         else
           echo "::error title=Cannot run pkg::Cannot seem to find the pkg binary"
         fi
-
     - name: Set outputs
       shell: bash
       id: pkg-action
       run: |
         echo "::group::Setting outputs"
-        if [ "${{ steps.pkg-action-internal.outputs.target-os }}" == "win" ]; then
-          echo "file=dist/$(node -p "require('./package.json').name").exe" >> $GITHUB_OUTPUT
+
+        if [[ -n "${{ inputs.filename }}" ]]; then
+          file="dist/${{ inputs.filename }}"
         else
-          echo "file=dist/$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
+          file="dist/$(node -p "require('./package.json').name")"
         fi
+        if [ "${{ steps.pkg-action-internal.outputs.target-os }}" == "win" ]; then
+          file="${file}.exe"
+        fi
+
+        echo "file=$file" >> $GITHUB_OUTPUT
 
         if [[ -n "${{ inputs.upload-key }}" ]]; then
           echo "artifact-key=${{ inputs.upload-key }}" >> $GITHUB_OUTPUT
@@ -157,7 +169,20 @@ runs:
         fi
 
         echo "::endgroup::"
+    - name: Verify Outputs
+      shell: bash
+      run: |
+        echo "::group::Internal output information"
+        echo "arch=${{ steps.pkg-action-internal.outputs.target-arch }}"
+        echo "node=${{ steps.pkg-action-internal.outputs.target-node }}"
+        echo "os=${{ steps.pkg-action-internal.outputs.target-os }}"
+        echo "output=${{ steps.pkg-action-internal.outputs.target-output }}"
+        echo "::endgroup::"
 
+        echo "::group::Output information"
+        echo "artifact-key=${{ steps.pkg-action.outputs.artifact-key }}"
+        echo "file=${{ steps.pkg-action.outputs.file }}"
+        echo "::endgroup::"
     - name: Run native ${{ steps.pkg-action-internal.outputs.target-arch }} pkg command
       if: inputs.test != 'true' && steps.pkg-action-internal.outputs.target-arch == steps.pkg-action-internal.outputs.runner-arch
       shell: bash
@@ -168,7 +193,7 @@ runs:
           pkg \
           --config ${{ inputs.config }} \
           --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
-          --out-path dist \
+          ${{ steps.pkg-action-internal.outputs.target-output }} \
           --debug \
           ${{ inputs.options }} \
           ${{ inputs.entrypoint }}
@@ -176,7 +201,7 @@ runs:
           pkg \
           --config ${{ inputs.config }} \
           --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
-          --out-path dist \
+          ${{ steps.pkg-action-internal.outputs.target-output }} \
           ${{ inputs.options }} \
           ${{ inputs.entrypoint }}
         fi
@@ -205,7 +230,7 @@ runs:
           pkg \
           --config ${{ inputs.config }} \
           --target=${{ steps.pkg-action-internal.outputs.target-node }}-${{ steps.pkg-action-internal.outputs.target-os }}-${{ steps.pkg-action-internal.outputs.target-arch }} \
-          --out-path dist \
+          ${{ steps.pkg-action-internal.outputs.target-output }} \
           ${{ inputs.options }} \
           ${{ inputs.entrypoint }}
           stat ${{ steps.pkg-action.outputs.file }}
