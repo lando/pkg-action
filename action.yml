@@ -173,13 +173,13 @@ runs:
       shell: bash
       run: |
         echo "::group::Internal output information"
-        echo "arch=steps.pkg-action-internal.outputs.target-arch"
-        echo "node=steps.pkg-action-internal.outputs.target-node"
-        echo "os=steps.pkg-action-internal.outputs.target-os"
+        echo "arch=${{ steps.pkg-action-internal.outputs.target-arch }}"
+        echo "node=${{ steps.pkg-action-internal.outputs.target-node }}"
+        echo "os=${{ steps.pkg-action-internal.outputs.target-os }}"
         echo "::endgroup::"
 
         echo "::group::Output information"
-        echo "artifact-key-key=${{ steps.pkg-action.outputs.artifact-key }}"
+        echo "artifact-key=${{ steps.pkg-action.outputs.artifact-key }}"
         echo "file=${{ steps.pkg-action.outputs.file }}"
         echo "::endgroup::"
     - name: Run native ${{ steps.pkg-action-internal.outputs.target-arch }} pkg command
