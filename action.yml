@@ -176,6 +176,7 @@ runs:
         echo "arch=${{ steps.pkg-action-internal.outputs.target-arch }}"
         echo "node=${{ steps.pkg-action-internal.outputs.target-node }}"
         echo "os=${{ steps.pkg-action-internal.outputs.target-os }}"
+        echo "output=${{ steps.pkg-action-internal.outputs.target-output }}"
         echo "::endgroup::"
 
         echo "::group::Output information"
