@@ -1,6 +1,5 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
-
 ## v5.1.0 - [October 26, 2024](https://github.com/lando/pkg-action/releases/tag/v5.1.0)
 
 * Added `inputs.upload-key` to customize the value of `outputs.artifact-key`
