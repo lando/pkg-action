@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v6.0.0 - [November 15, 2024](https://github.com/lando/pkg-action/releases/tag/v6.0.0)
+
 ### **BREAKING CHANGES**
 
 * Updated to `actions/upload-artifact@v4`
