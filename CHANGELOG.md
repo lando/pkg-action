@@ -1,5 +1,11 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### **BREAKING CHANGES**
+
+* Updated to `actions/upload-artifact@v4`
+
+See [this migration guide](https://github.com/actions/upload-artifact/blob/main/docs/MIGRATION.md) for help in updating your actions.
+
 ## v5.2.0 - [November 14, 2024](https://github.com/lando/pkg-action/releases/tag/v5.2.0)
 
 * Added `inputs.filename` to customize the name of the output binary

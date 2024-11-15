@@ -237,7 +237,7 @@ runs:
 
     - name: Upload ${{ steps.pkg-action.outputs.artifact-key }}
       if: inputs.test != 'true' && inputs.upload == 'true'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.pkg-action.outputs.artifact-key }}
         path: ${{ steps.pkg-action.outputs.file }}
