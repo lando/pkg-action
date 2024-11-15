@@ -35,6 +35,7 @@ jobs:
         uses: ./
         with:
           entrypoint: bin/test
+          upload-key: another-thing-${{ github.sha }}
           filename: bob
 
   basic-cross-platform-test:
